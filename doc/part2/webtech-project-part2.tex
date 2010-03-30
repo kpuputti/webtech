@@ -146,9 +146,21 @@ also see the places on a interactive map.
 
 \section{Tools}
 
+We use the required CherryPy Python web application framework for the
+website, with Mako templates for the front end.\\
 
+The backend itself runs on rdflib (http://www.rdflib.net/), which is
+an RDF library for Python. We chose it because it seems to be the most
+popular and matured RDF library for Python. There are also a number of
+different data store solution for rdflib. We plan to first use SQLite
+that is bundled with Python, but if it doesn't scale enough, we're
+going to change to MySQL.\\
 
-\section{Data}
+For the front end, we plan to use jQuery (http://jquery.org/)
+JavaScript library and the Google Maps API for the interactive map
+that can be moved and zoomed around.
+
+\section{Use of Data}
 
 
 
