@@ -7,3 +7,4 @@
 *.toc
 *.out
 doc/*.pdf
+project/cherrypy/*
