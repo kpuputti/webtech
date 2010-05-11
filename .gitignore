@@ -8,3 +8,4 @@
 *.out
 doc/*.pdf
 project/cherrypy/*
+project/rdflib/*
