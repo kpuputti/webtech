@@ -1,3 +1,9 @@
+import os.path
+
+
+# The root folder of the project.
+PROJECT_ROOT = '/home/kpuputti/dev/webtech/project'
+
 # Namespace definitions.
 _NS_DOMAIN = 'http://example.org/'
 _NS_BASE = _NS_DOMAIN + 'flyingfist/'
@@ -91,3 +97,11 @@ COLUMNS_FEATURE = (
     'timezone',
     'modification date',
 )
+
+_DATA_FOLDER = os.path.join(PROJECT_ROOT, 'data')
+
+FILE_ADMIN1_CODES = os.path.join(_DATA_FOLDER, 'admin1Codes.txt')
+FILE_ADMIN2_CODES = os.path.join(_DATA_FOLDER, 'admin2Codes.txt')
+FILE_FEATURE_CODES = os.path.join(_DATA_FOLDER, 'featureCodes_en.txt')
+FILE_COUNTRY_INFO = os.path.join(_DATA_FOLDER, 'countryInfo.txt')
+FILE_NL_FEATURES = os.path.join(_DATA_FOLDER, 'NL.txt')
