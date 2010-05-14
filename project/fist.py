@@ -7,25 +7,34 @@ Usage:
 1. Run application:
 python fist.py run
 
-2. Clear the RDF storage:
-python fist.py clear_storage
-
-3. Create the RDF storage (clears the storage first):
+2. Create the RDF storage (clears the storage first):
 python fist.py create_storage
+
+3. Clear the RDF storage:
+python fist.py clear_storage
 """
-import sys
+from flyingfist import settings
 from flyingfist import storage
+import logging
+import sys
+
+
+# Set logging configuration.
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(name)s %(levelname)s: %(message)s',
+                    filename=settings.LOG_FILE)
+logger = logging.getLogger('flyingfist')
 
 
 def main(operation=None):
     if operation == 'run':
-        print 'run application'
+        logger.info('Running the application.')
     elif operation == 'create_storage':
-        print 'Creating the RDF storage.'
+        logger.info('Creating the RDF storage.')
         st = storage.Storage()
         st.create()
     elif operation == 'clear_storage':
-        print 'Clearing the RDF storage.'
+        logger.info('Clearing the RDF storage.')
         st = storage.Storage()
         st.clear()
     else:
@@ -33,7 +42,6 @@ def main(operation=None):
         print __doc__
         return 2
     return 0
-
 
 
 if __name__ == '__main__':
