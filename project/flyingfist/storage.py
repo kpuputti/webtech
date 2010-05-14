@@ -38,11 +38,11 @@ class Storage(object):
     def _add_data(self):
         """Add all the instance data to the RDF storage."""
 
-    def _clear(self):
+    def clear(self):
         """Clears the whole RDF storage."""
 
     def create(self):
         """Create the RDF storage structure and add the instance data."""
-        self._clear()
+        self.clear()
         self._create_ontologies()
         self._add_data()
