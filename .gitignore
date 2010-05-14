@@ -10,3 +10,4 @@ doc/*.pdf
 project/cherrypy/*
 project/rdflib/*
 project/data/*
+project/log/*
