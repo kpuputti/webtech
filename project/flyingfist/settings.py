@@ -1,11 +1,12 @@
+import logging
 import os.path
 
 
 # The root folder of the project.
 PROJECT_ROOT = '/home/kpuputti/dev/webtech/project'
 
-# Path to the file where logging info is written.
 LOG_FILE = os.path.join(PROJECT_ROOT, 'log', 'flyingfist.log')
+LOG_LEVEL = logging.DEBUG
 
 # Namespace definitions.
 _NS_DOMAIN = 'http://example.org/'
