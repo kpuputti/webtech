@@ -56,3 +56,16 @@ class StorageCreator(object):
         self.clear()
         self._create_ontologies()
         self._add_data()
+
+_store = None
+
+class Storage(object):
+
+    def __init__(self):
+        if _store is None:
+            # TODO: create a new store
+            pass
+
+    def query(self, query):
+        # TODO: execute the SPARQL query
+        pass
