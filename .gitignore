@@ -9,6 +9,8 @@
 doc/*.pdf
 project/cherrypy/*
 project/rdflib/*
+project/rdflib2.4/*
+project/rdflib3/*
 project/data/*
 project/log/*
 project/db.sqlite
