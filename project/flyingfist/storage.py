@@ -1,6 +1,10 @@
 """Helper functions to create the RDF storage.
 """
 from flyingfist import settings
+import logging
+
+
+logger = logging.getLogger('flyingfist.storage')
 
 
 class Storage(object):
@@ -9,7 +13,13 @@ class Storage(object):
         pass
 
     def _add_admin1_codes(self):
-        pass
+        with open(settings.FILE_ADMIN1_CODES) as f:
+            for line in f:
+                try:
+                    code, name = line.strip().split('\t')
+                except ValueError:
+                    code, name = line.strip(), None
+
 
     def _add_admin2_codes(self):
         pass
