@@ -12,3 +12,4 @@ project/rdflib/*
 project/data/*
 project/log/*
 project/db.sqlite
+project/rdfextras/*
