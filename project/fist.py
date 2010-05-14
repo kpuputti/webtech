@@ -31,11 +31,11 @@ def main(operation=None):
         logger.info('Running the application.')
     elif operation == 'create_storage':
         logger.info('Creating the RDF storage.')
-        st = storage.Storage()
+        st = storage.StorageCreator()
         st.create()
     elif operation == 'clear_storage':
         logger.info('Clearing the RDF storage.')
-        st = storage.Storage()
+        st = storage.StorageCreator()
         st.clear()
     else:
         sys.stderr.write('Unknown argument: %s\r\n' % operation)

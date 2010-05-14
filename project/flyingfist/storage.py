@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger('flyingfist.storage')
 
 
-class Storage(object):
+class StorageCreator(object):
 
     def __init__(self):
         pass
