@@ -8,6 +8,8 @@ PROJECT_ROOT = '/home/kpuputti/dev/webtech/project'
 LOG_FILE = os.path.join(PROJECT_ROOT, 'log', 'flyingfist.log')
 LOG_LEVEL = logging.DEBUG
 
+DB_PATH = os.path.join(PROJECT_ROOT, 'db.sqlite')
+
 # Namespace definitions.
 _NS_DOMAIN = 'http://example.org/'
 _NS_BASE = _NS_DOMAIN + 'flyingfist/'
