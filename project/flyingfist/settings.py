@@ -3,7 +3,7 @@ import os.path
 
 
 # The root folder of the project.
-PROJECT_ROOT = '/home/kpuputti/dev/webtech/project'
+PROJECT_ROOT = os.path.split(os.path.dirname(os.path.realpath(__file__)))[0]
 
 LOG_FILE = os.path.join(PROJECT_ROOT, 'log', 'flyingfist.log')
 LOG_LEVEL = logging.DEBUG
