@@ -1,6 +1,11 @@
 """Helper functions to create the RDF storage.
 """
 from flyingfist import settings
+from rdflib import Literal
+from rdflib import Namespace
+from rdflib import RDF
+from rdflib import RDFS
+from rdflib import graph
 import logging
 
 
@@ -10,19 +15,53 @@ logger = logging.getLogger('flyingfist.storage')
 class StorageCreator(object):
 
     def __init__(self):
-        pass
+        self.graph = graph.ConjunctiveGraph()
+        self.classes = Namespace(settings.NS_CLASSES)
+        self.admin_codes = Namespace(settings.NS_ADMIN_CODES)
+
 
     def _add_admin1_codes(self):
+        logger.info('Adding admin 1 codes to the graph.')
+
+        # Add the admin1Code Class to the graph.
+        admin_code_class = self.classes['admin1Code']
+        self.graph.add((admin_code_class, RDF.type, RDFS.Class))
+        self.graph.add((admin_code_class, RDFS.label, Literal('admin 1 code')))
+
         with open(settings.FILE_ADMIN1_CODES) as f:
             for line in f:
+                line = line.decode('utf-8').strip()
                 try:
-                    code, name = line.strip().split('\t')
+                    code, name = line.split('\t')
                 except ValueError:
-                    code, name = line.strip(), None
+                    code, name = line, None
+                code_instance = self.admin_codes[code]
+                self.graph.add((code_instance, RDF.type,
+                                admin_code_class))
+                if name is not None:
+                    self.graph.add((code_instance, RDFS.label,
+                                    Literal(name)))
 
 
     def _add_admin2_codes(self):
-        pass
+        logger.info('Adding admin 2 codes to the graph.')
+
+        # Add the admin2Code Class to the graph.
+        admin_code_class = self.classes['admin2Code']
+        self.graph.add((admin_code_class, RDF.type, RDFS.Class))
+        self.graph.add((admin_code_class, RDFS.label, Literal('admin 2 code')))
+
+        with open(settings.FILE_ADMIN2_CODES) as f:
+            for line in f:
+                line = line.decode('utf-8').strip()
+                code, name, asciiname, geonameid = line.split('\t')
+                code_instance = self.admin_codes[code]
+                self.graph.add((code_instance, RDF.type,
+                                admin_code_class))
+                if name is not None:
+                    self.graph.add((code_instance, RDFS.label,
+                                    Literal(name)))
+
 
     def _add_feature_codes(self):
         pass
@@ -41,6 +80,8 @@ class StorageCreator(object):
         """
         self._add_admin1_codes()
         self._add_admin2_codes()
+        import pdb; pdb.set_trace()
+
         self._add_feature_codes()
         self._add_country_info_columns()
         self._add_feature_columns()
@@ -57,14 +98,15 @@ class StorageCreator(object):
         self._create_ontologies()
         self._add_data()
 
-_store = None
+    def save(self):
+        """Serialize the graph into files."""
+        pass
+
 
 class Storage(object):
 
     def __init__(self):
-        if _store is None:
-            # TODO: create a new store
-            pass
+        pass
 
     def query(self, query):
         # TODO: execute the SPARQL query
