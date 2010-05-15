@@ -58,9 +58,8 @@ class StorageCreator(object):
                 code_instance = self.admin_codes[code]
                 self.graph.add((code_instance, RDF.type,
                                 admin_code_class))
-                if name is not None:
-                    self.graph.add((code_instance, RDFS.label,
-                                    Literal(name)))
+                self.graph.add((code_instance, RDFS.label,
+                                Literal(name)))
 
 
     def _add_feature_codes(self):
@@ -80,8 +79,6 @@ class StorageCreator(object):
         """
         self._add_admin1_codes()
         self._add_admin2_codes()
-        import pdb; pdb.set_trace()
-
         self._add_feature_codes()
         self._add_country_info_columns()
         self._add_feature_columns()
