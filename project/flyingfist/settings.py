@@ -107,4 +107,5 @@ FILE_COUNTRY_INFO = os.path.join(_DATA_FOLDER, 'countryInfo.txt')
 FILE_NL_FEATURES = os.path.join(_DATA_FOLDER, 'NL.txt')
 
 _OUTPUT_FOLDER = os.path.join(PROJECT_ROOT, 'rdf_data')
-RDF_FILE = os.path.join(_OUTPUT_FOLDER, 'data.n3')
+ONTOLOGY_FILE = os.path.join(_OUTPUT_FOLDER, 'ontology.n3')
+INSTANCES_FILE = os.path.join(_OUTPUT_FOLDER, 'instances.n3')
