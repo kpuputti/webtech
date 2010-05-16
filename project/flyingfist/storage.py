@@ -22,18 +22,34 @@ class StorageCreator(object):
         self.instances.bind('flyingfist', self.flyingfist)
 
     def _add_classes(self):
-        admin_code_class = self.flyingfist['Admin1Code']
-        self.ontology.add((admin_code_class, RDF.type, RDFS.Class))
-        self.ontology.add((admin_code_class, RDFS.label, Literal('admin 1 code')))
-        admin_code_class = self.flyingfist['Admin2Code']
-        self.ontology.add((admin_code_class, RDF.type, RDFS.Class))
-        self.ontology.add((admin_code_class, RDFS.label, Literal('admin 2 code')))
+        admin_code = self.flyingfist['AdminCode']
+        self.ontology.add((admin_code, RDF.type, RDFS.Class))
+        self.ontology.add((admin_code, RDFS.label, Literal('admin code')))
 
+        admin1_code = self.flyingfist['Admin1Code']
+        self.ontology.add((admin1_code, RDF.type, RDFS.Class))
+        self.ontology.add((admin1_code, RDFS.label,
+                           Literal('admin 1 code')))
+        self.ontology.add((admin1_code, RDFS.subClassOf, admin_code))
+
+        admin2_code = self.flyingfist['Admin2Code']
+        self.ontology.add((admin2_code, RDF.type, RDFS.Class))
+        self.ontology.add((admin2_code, RDFS.label,
+                           Literal('admin 2 code')))
+        self.ontology.add((admin2_code, RDFS.subClassOf, admin_code))
+
+        feature_code = self.flyingfist['FeatureCode']
+        self.ontology.add((feature_code, RDF.type, RDFS.Class))
+        self.ontology.add((feature_code, RDFS.label, Literal('feature code')))
 
     def _add_properties(self):
         feature = self.flyingfist['feature']
         self.ontology.add((feature, RDF.type, RDF.Property))
         self.ontology.add((feature, RDFS.label, Literal('feature')))
+        description = self.flyingfist['description']
+        self.ontology.add((description, RDF.type, RDF.Property))
+        self.ontology.add((description, RDFS.label, Literal('description')))
+
 
     def _add_admin1_codes(self):
         logger.info('Adding admin 1 codes to the graph.')
@@ -69,7 +85,25 @@ class StorageCreator(object):
                                     self.flyingfist[geonameid]))
 
     def _add_feature_codes(self):
-        pass
+        logger.info('Adding feature codes to the graph.')
+        feature_code = self.flyingfist['FeatureCode']
+        description_prop = self.flyingfist['description']
+        with open(settings.FILE_FEATURE_CODES) as f:
+            for line in f:
+                line = line.decode('utf-8').strip()
+                try:
+                    code, name, description = line.split('\t')
+                except ValueError:
+                    code, name = line.split('\t')
+                    description = None
+                if name != 'null':
+                    instance = self.flyingfist[code]
+                    self.ontology.add((instance, RDF.type, RDFS.Class))
+                    self.ontology.add((instance, RDFS.subClassOf, feature_code))
+                    self.ontology.add((instance, RDFS.label, Literal(name)))
+                    if description:
+                        self.ontology.add((instance, description_prop,
+                                           Literal(description)))
 
     def _add_country_info_columns(self):
         pass
@@ -105,7 +139,8 @@ class StorageCreator(object):
         with open(ontology_name, 'w') as f:
             f.write(self.ontology.serialize(format='n3'))
         logger.info('Ontology saved successfully.')
-        logger.info('Saving serialized instances into file: %s' % instances_name)
+        logger.info('Saving serialized instances into file: '
+                    '%s' % instances_name)
         with open(instances_name, 'w') as f:
             f.write(self.instances.serialize(format='n3'))
         logger.info('Instances saved successfully.')
