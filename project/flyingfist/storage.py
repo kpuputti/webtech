@@ -18,8 +18,8 @@ class StorageCreator(object):
         self.ontology = graph.ConjunctiveGraph()
         self.instances = graph.ConjunctiveGraph()
         self.flyingfist = Namespace(settings.NS_FLYINGFIST)
-        self.ontology.bind('flyingfist', self.flyingfist)
-        self.instances.bind('flyingfist', self.flyingfist)
+        self.ontology.bind('ff', self.flyingfist)
+        self.instances.bind('ff', self.flyingfist)
 
     def _add_classes(self):
         admin_code = self.flyingfist['AdminCode']
@@ -123,6 +123,42 @@ class StorageCreator(object):
         self._add_country_info()
         self._add_feature_columns()
 
+    def _get_admin_class(self, code1, code2, level):
+        if level == 1:
+            # First try the NL prefix.
+            feature_class = self.flyingfist['NL.' + code1]
+            class_triples = self.instances.triples((feature_class,
+                                                    RDF.type,
+                                                    None))
+            if len(list(class_triples)) == 1:
+                return feature_class
+            else:
+                # It the NL prefix was not found, try the BE one.
+                feature_class = self.flyingfist['BE.' + code1]
+                class_triples = self.instances.triples((feature_class,
+                                                        RDF.type,
+                                                        None))
+                if len(list(class_triples)) == 1:
+                    return feature_class
+                else:
+                    logger.warn('Admin 1 code not found: %s' % code1)
+                    return None
+        elif level == 2:
+            code = 'NL.' + code1 + '.' + code2
+            feature_class = self.flyingfist[code]
+            class_triples = self.instances.triples((feature_class,
+                                                    RDF.type,
+                                                    None))
+            if len(list(class_triples)) == 1:
+                return feature_class
+            else:
+                logger.warn("Admin 2 code '%s' not found: %s" % (code2, code))
+                return None
+        else:
+            logger.warn('Bad admin level: %d' % level)
+
+
+
     def _add_feature(self, columns):
         geoname_id = columns[0] or None
         name = columns[1] or None
@@ -150,6 +186,9 @@ class StorageCreator(object):
                                                        feature_code)]))
         self.instances.add((instance, RDFS.label, Literal(name)))
         self.instances.add((instance,
+                            self.flyingfist['geonameId'],
+                            Literal(geoname_id)))
+        self.instances.add((instance,
                             self.flyingfist['alternateNames'],
                             Literal(alternate_names)))
         self.instances.add((instance,
@@ -162,43 +201,20 @@ class StorageCreator(object):
                             self.flyingfist['countryCode'],
                             Literal(country_code)))
 
-        admin1_prefix = None
-
         if admin1_code:
-            # Try first the NL code.
-            feature_class = self.flyingfist['NL.' + admin1_code]
-            class_triples = self.instances.triples((feature_class,
-                                                    RDF.type,
-                                                    None))
-            if len(list(class_triples)) == 1:
+            admin1_class = self._get_admin_class(admin1_code, None, 1)
+            if admin1_class is not None:
                 self.instances.add((instance,
                                     self.flyingfist['admin1Code'],
-                                    feature_class))
-                admin1_prefix = 'NL.' + admin1_code
-            else:
-                # If the NL code was nto found, try the BE one.
-                feature_class = self.flyingfist['BE.' + admin1_code]
-                class_triples = self.instances.triples((feature_class,
-                                                        RDF.type,
-                                                        None))
-                if len(list(class_triples)) == 1:
-                    self.instances.add((instance,
-                                        self.flyingfist['admin1Code'],
-                                        feature_class))
-                    admin1_prefix = 'BE.' + admin1_code
-                else:
-                    logger.warn('Admin 1 code not found: %s' % admin1_code)
+                                    admin1_class))
 
-        if admin1_prefix and admin2_code:
-            feature_class = self.flyingfist[admin1_prefix + '.' + admin2_code]
-            class_triples = self.instances.triples((feature_class,
-                                                    RDF.type, None))
-            if len(list(class_triples)) == 1:
-                self.instances.add((instance,
-                                    self.flyingfist['admin2Code'],
-                                    feature_class))
-            else:
-                logger.warn('Admin 2 code not found: %s' % admin2_code)
+                if admin2_code:
+                    admin2_class = self._get_admin_class(admin1_code,
+                                                         admin2_code, 2)
+                    if admin2_class is not None:
+                        self.instances.add((instance,
+                                            self.flyingfist['admin2Code'],
+                                            admin2_class))
 
     def _add_data(self):
         """Add all the instance data to the RDF storage."""
