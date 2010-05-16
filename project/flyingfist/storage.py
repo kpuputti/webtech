@@ -43,13 +43,11 @@ class StorageCreator(object):
         self.ontology.add((feature_code, RDFS.label, Literal('feature code')))
 
     def _add_properties(self):
-        feature = self.flyingfist['feature']
-        self.ontology.add((feature, RDF.type, RDF.Property))
-        self.ontology.add((feature, RDFS.label, Literal('feature')))
-        description = self.flyingfist['description']
-        self.ontology.add((description, RDF.type, RDF.Property))
-        self.ontology.add((description, RDFS.label, Literal('description')))
-
+        logger.info('Adding properties to the graph.')
+        for name, desc in settings.PROPERTIES.iteritems():
+            prop = self.flyingfist[name]
+            self.ontology.add((prop, RDF.type, RDF.Property))
+            self.ontology.add((prop, RDFS.label, Literal(desc)))
 
     def _add_admin1_codes(self):
         logger.info('Adding admin 1 codes to the graph.')
@@ -105,7 +103,7 @@ class StorageCreator(object):
                         self.ontology.add((instance, description_prop,
                                            Literal(description)))
 
-    def _add_country_info_columns(self):
+    def _add_country_info(self):
         pass
 
     def _add_feature_columns(self):
@@ -122,11 +120,38 @@ class StorageCreator(object):
         self._add_admin1_codes()
         self._add_admin2_codes()
         self._add_feature_codes()
-        self._add_country_info_columns()
+        self._add_country_info()
         self._add_feature_columns()
+
+    def _add_feature(self, columns):
+        geoname_id = columns[0] or None
+        name = columns[1] or None
+        asciiname = columns[2] or None
+        alternate_names = columns[3] or None
+        latitude = columns[4] or None
+        longitude = columns[5] or None
+        feature_class = columns[6] or None
+        feature_code = columns[7] or None
+        country_code = columns[8] or None
+        cc2 = columns[9] or None
+        admin1_code = columns[10] or None
+        admin2_code = columns[11] or None
+        admin3_code = columns[12] or None
+        admin4_code = columns[13] or None
+        population = columns[14] or None
+        elevation = columns[15] or None
+        gtopo30 = columns[16] or None
+        timezone = columns[17] or None
+        modification_date = columns[18] or None
+
 
     def _add_data(self):
         """Add all the instance data to the RDF storage."""
+        with open(settings.FILE_NL_FEATURES) as f:
+            for line in f:
+                columns = line.decode('utf-8').strip().split('\t')
+                assert len(columns) == 19
+                self._add_feature(columns)
 
     def create(self):
         """Create the RDF storage structure and add the instance data."""
