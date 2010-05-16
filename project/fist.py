@@ -9,11 +9,15 @@ python fist.py run
 
 2. Create the RDF storage (clears the storage first):
 python fist.py create_storage
+
+3. Run the test suite:
+python fist test
 """
 from flyingfist import settings
 from flyingfist import storage
 import logging
 import sys
+import nose
 
 
 # Set logging configuration.
@@ -31,6 +35,9 @@ def main(operation=None):
         st = storage.StorageCreator()
         st.create()
         st.save(settings.ONTOLOGY_FILE, settings.INSTANCES_FILE)
+    elif operation == 'test':
+        logger.info('Running tests.')
+        nose.main(argv=['-w', 'tests'])
     else:
         sys.stderr.write('Unknown argument: %s\r\n' % operation)
         print __doc__
