@@ -16,8 +16,9 @@ python fist test
 from flyingfist import settings
 from flyingfist import storage
 import logging
-import sys
 import nose
+import rdflib
+import sys
 
 
 # Set logging configuration.
@@ -25,6 +26,13 @@ logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(name)s %(levelname)s: %(message)s',
                     filename=settings.LOG_FILE)
 logger = logging.getLogger('flyingfist')
+
+
+# Enable the SPARQL plugin.
+rdflib.plugin.register('sparql', rdflib.query.Processor,
+                       'rdfextras.sparql.processor', 'Processor')
+rdflib.plugin.register('sparql', rdflib.query.Result,
+                       'rdfextras.sparql.query', 'SPARQLQueryResult')
 
 
 def main(operation=None):
