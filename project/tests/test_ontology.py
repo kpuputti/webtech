@@ -11,6 +11,7 @@ ontology.parse(settings.ONTOLOGY_FILE, format='n3')
 ontology.parse(settings.INSTANCES_FILE, format='n3')
 
 FEATURE_CODE_COUNT = 671
+FEATURE_COUNT = 21372
 FF = Namespace(settings.NS_FLYINGFIST)
 
 SPARQL_BASE = """\
@@ -47,3 +48,10 @@ class OntologyTest(unittest.TestCase):
         for prop in properties:
             labels = list(ontology.triples((prop[0], RDFS.label, None)))
             self.assertEquals(len(labels), 1)
+
+
+class InstanceTest(unittest.TestCase):
+
+    def test_feature_count(self):
+        features = list(ontology.triples((None, FF['geonameId'], None)))
+        self.assertEquals(len(features), FEATURE_COUNT)
