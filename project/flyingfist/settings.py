@@ -141,6 +141,6 @@ FILE_FEATURE_CODES = os.path.join(_DATA_FOLDER, 'featureCodes_en.txt')
 FILE_COUNTRY_INFO = os.path.join(_DATA_FOLDER, 'countryInfo.txt')
 FILE_NL_FEATURES = os.path.join(_DATA_FOLDER, 'NL.txt')
 
-_OUTPUT_FOLDER = os.path.join(PROJECT_ROOT, 'rdf_data')
+_OUTPUT_FOLDER = os.path.join(PROJECT_ROOT, 'output')
 ONTOLOGY_FILE = os.path.join(_OUTPUT_FOLDER, 'ontology.n3')
 INSTANCES_FILE = os.path.join(_OUTPUT_FOLDER, 'instances.n3')
