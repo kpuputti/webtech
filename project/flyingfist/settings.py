@@ -35,23 +35,23 @@ NS_FLYINGFIST = _NS_DOMAIN + 'flyingfist/'
 # 16 EquivalentFipsCode
 
 COLUMNS_COUNTRY_INFO = (
-    'ISO',
-    'ISO3',
-    'ISO-Numeric',
-    'fips',
-    'Country Capital Area(in sq km)',
-    'Population',
-    'Continent',
-    'tld',
-    'CurrencyCode',
-    'CurrencyName',
-    'Phone',
-    'Postal Code Format',
-    'Postal Code Regex',
-    'Languages',
-    'geonameid',
-    'neighbours',
-    'EquivalentFipsCode',
+    ('iso', 'ISO code', True),
+    ('iso3', 'ISO3 code', True),
+    ('isoNumeric', 'ISO numeric code', True),
+    ('fips', 'fips', True),
+    ('countryCapitalArea', 'country capital area (in sq km)', True),
+    ('population', 'population', True),
+    ('continent', 'continent', True),
+    ('tld', 'top level domain', True),
+    ('currencyCode', 'currency code', True),
+    ('currencyName', 'currency name', True),
+    ('phone', 'phone', True),
+    ('postalCodeFormat', 'postal code format', True),
+    ('postalCodeRegex', 'postal code regex', False),
+    ('languages', 'languages', True),
+    ('feature', 'feature', True),
+    ('neighbours', 'neighbours', True),
+    ('equivalentFipsCode', 'equivalent fips code', True),
 )
 
 # NL.txt column names:
@@ -97,6 +97,25 @@ COLUMNS_FEATURE = (
     'timezone',
     'modification date',
 )
+
+# Continent codes :
+# AF : Africa           geonameId=6255146
+# AS : Asia         geonameId=6255147
+# EU : Europe           geonameId=6255148
+# NA : North America        geonameId=6255149
+# OC : Oceania          geonameId=6255151
+# SA : South America        geonameId=6255150
+# AN : Antarctica           geonameId=6255152
+
+CONTINENTS = {
+    'AF': 6255146,
+    'AS': 6255147,
+    'EU': 6255148,
+    'NA': 6255149,
+    'OC': 6255151,
+    'SA': 6255150,
+    'AN': 6255152,
+}
 
 _DATA_FOLDER = os.path.join(PROJECT_ROOT, 'data')
 
