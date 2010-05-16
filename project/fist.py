@@ -9,9 +9,6 @@ python fist.py run
 
 2. Create the RDF storage (clears the storage first):
 python fist.py create_storage
-
-3. Clear the RDF storage:
-python fist.py clear_storage
 """
 from flyingfist import settings
 from flyingfist import storage
@@ -34,10 +31,6 @@ def main(operation=None):
         st = storage.StorageCreator()
         st.create()
         st.save(settings.ONTOLOGY_FILE, settings.INSTANCES_FILE)
-    elif operation == 'clear_storage':
-        logger.info('Clearing the RDF storage.')
-        st = storage.StorageCreator()
-        st.clear()
     else:
         sys.stderr.write('Unknown argument: %s\r\n' % operation)
         print __doc__
