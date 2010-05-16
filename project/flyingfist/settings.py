@@ -117,6 +117,22 @@ CONTINENTS = {
     'AN': 6255152,
 }
 
+PROPERTIES = {
+    'feature': 'feature',
+    'description': 'description',
+    'geonameId': 'geoname id',
+    'alternateNames': 'alternate names',
+    'latitude': 'latitude',
+    'longitude': 'longitude',
+    'countryCode': 'country code',
+    'cc2': 'cc2',
+    'admin1Code': 'admin1 code',
+    'admin2Code': 'admin 2 code',
+    'population': 'population',
+    'elevation': 'elevation',
+    'timezone': 'timezone',
+}
+
 _DATA_FOLDER = os.path.join(PROJECT_ROOT, 'data')
 
 FILE_ADMIN1_CODES = os.path.join(_DATA_FOLDER, 'admin1Codes.txt')
