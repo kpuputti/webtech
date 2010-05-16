@@ -33,7 +33,7 @@ def main(operation=None):
         logger.info('Creating the RDF storage.')
         st = storage.StorageCreator()
         st.create()
-        st.save(settings.RDF_FILE)
+        st.save(settings.ONTOLOGY_FILE, settings.INSTANCES_FILE)
     elif operation == 'clear_storage':
         logger.info('Clearing the RDF storage.')
         st = storage.StorageCreator()
