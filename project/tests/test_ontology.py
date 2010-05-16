@@ -8,7 +8,7 @@ import unittest
 
 ontology = graph.ConjunctiveGraph()
 ontology.parse(settings.ONTOLOGY_FILE, format='n3')
-#ontology.parse(settings.INSTANCES_FILE, format='n3')
+ontology.parse(settings.INSTANCES_FILE, format='n3')
 
 FEATURE_CODE_COUNT = 671
 FF = Namespace(settings.NS_FLYINGFIST)
@@ -40,3 +40,10 @@ class OntologyTest(unittest.TestCase):
         """
         result = ontology.query(query)
         self.assertEquals(len(result), FEATURE_CODE_COUNT)
+
+    def test_properties(self):
+        properties = list(ontology.triples((None, RDF.type, RDF.Property)))
+        self.assertEquals(len(properties), len(settings.PROPERTIES))
+        for prop in properties:
+            labels = list(ontology.triples((prop[0], RDFS.label, None)))
+            self.assertEquals(len(labels), 1)
