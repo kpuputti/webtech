@@ -8,7 +8,7 @@ PROJECT_ROOT = os.path.split(os.path.dirname(os.path.realpath(__file__)))[0]
 LOG_FILE = os.path.join(PROJECT_ROOT, 'log', 'flyingfist.log')
 LOG_LEVEL = logging.DEBUG
 
-DB_PATH = os.path.join(PROJECT_ROOT, 'db.sqlite')
+TEMPLATE_FOLDER = os.path.join(PROJECT_ROOT, 'templates')
 
 # Namespace definitions.
 _NS_DOMAIN = 'http://example.org/'
