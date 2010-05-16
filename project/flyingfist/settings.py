@@ -12,13 +12,7 @@ DB_PATH = os.path.join(PROJECT_ROOT, 'db.sqlite')
 
 # Namespace definitions.
 _NS_DOMAIN = 'http://example.org/'
-_NS_BASE = _NS_DOMAIN + 'flyingfist/'
-
-NS_PROPERTIES = _NS_BASE + 'properties/'
-NS_FEATURES = _NS_BASE + 'features/'
-
-NS_CLASSES = _NS_BASE + 'classes/'
-NS_ADMIN_CODES = _NS_BASE + 'adminCodes/'
+NS_FLYINGFIST = _NS_DOMAIN + 'flyingfist/'
 
 # countryInfo.txt column names:
 #
@@ -111,3 +105,6 @@ FILE_ADMIN2_CODES = os.path.join(_DATA_FOLDER, 'admin2Codes.txt')
 FILE_FEATURE_CODES = os.path.join(_DATA_FOLDER, 'featureCodes_en.txt')
 FILE_COUNTRY_INFO = os.path.join(_DATA_FOLDER, 'countryInfo.txt')
 FILE_NL_FEATURES = os.path.join(_DATA_FOLDER, 'NL.txt')
+
+_OUTPUT_FOLDER = os.path.join(PROJECT_ROOT, 'rdf_data')
+RDF_FILE = os.path.join(_OUTPUT_FOLDER, 'data.n3')
