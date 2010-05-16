@@ -38,9 +38,9 @@ class StorageCreator(object):
                            Literal('admin 2 code')))
         self.ontology.add((admin2_code, RDFS.subClassOf, admin_code))
 
-        feature_code = self.flyingfist['FeatureCode']
+        feature_code = self.flyingfist['Feature']
         self.ontology.add((feature_code, RDF.type, RDFS.Class))
-        self.ontology.add((feature_code, RDFS.label, Literal('feature code')))
+        self.ontology.add((feature_code, RDFS.label, Literal('feature')))
 
     def _add_properties(self):
         logger.info('Adding properties to the graph.')
@@ -84,7 +84,7 @@ class StorageCreator(object):
 
     def _add_feature_codes(self):
         logger.info('Adding feature codes to the graph.')
-        feature_code = self.flyingfist['FeatureCode']
+        feature_code = self.flyingfist['Feature']
         description_prop = self.flyingfist['description']
         with open(settings.FILE_FEATURE_CODES) as f:
             for line in f:
@@ -144,6 +144,61 @@ class StorageCreator(object):
         timezone = columns[17] or None
         modification_date = columns[18] or None
 
+        instance = self.flyingfist[geoname_id]
+        self.instances.add((instance, RDF.type,
+                            self.flyingfist['%s.%s' % (feature_class,
+                                                       feature_code)]))
+        self.instances.add((instance, RDFS.label, Literal(name)))
+        self.instances.add((instance,
+                            self.flyingfist['alternateNames'],
+                            Literal(alternate_names)))
+        self.instances.add((instance,
+                            self.flyingfist['latitude'],
+                            Literal(latitude)))
+        self.instances.add((instance,
+                            self.flyingfist['longitude'],
+                            Literal(longitude)))
+        self.instances.add((instance,
+                            self.flyingfist['countryCode'],
+                            Literal(country_code)))
+
+        admin1_prefix = None
+
+        if admin1_code:
+            # Try first the NL code.
+            feature_class = self.flyingfist['NL.' + admin1_code]
+            class_triples = self.instances.triples((feature_class,
+                                                    RDF.type,
+                                                    None))
+            if len(list(class_triples)) == 1:
+                self.instances.add((instance,
+                                    self.flyingfist['admin1Code'],
+                                    feature_class))
+                admin1_prefix = 'NL.' + admin1_code
+            else:
+                # If the NL code was nto found, try the BE one.
+                feature_class = self.flyingfist['BE.' + admin1_code]
+                class_triples = self.instances.triples((feature_class,
+                                                        RDF.type,
+                                                        None))
+                if len(list(class_triples)) == 1:
+                    self.instances.add((instance,
+                                        self.flyingfist['admin1Code'],
+                                        feature_class))
+                    admin1_prefix = 'BE.' + admin1_code
+                else:
+                    logger.warn('Admin 1 code not found: %s' % admin1_code)
+
+        if admin1_prefix and admin2_code:
+            feature_class = self.flyingfist[admin1_prefix + '.' + admin2_code]
+            class_triples = self.instances.triples((feature_class,
+                                                    RDF.type, None))
+            if len(list(class_triples)) == 1:
+                self.instances.add((instance,
+                                    self.flyingfist['admin2Code'],
+                                    feature_class))
+            else:
+                logger.warn('Admin 2 code not found: %s' % admin2_code)
 
     def _add_data(self):
         """Add all the instance data to the RDF storage."""
