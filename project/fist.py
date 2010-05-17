@@ -51,6 +51,7 @@ class FlyingFist(object):
 def main(operation=None):
     if operation == 'run':
         logger.info('Running the application.')
+        cherrypy.config.update({'tools.staticdir.root': settings.PROJECT_ROOT})
         cherrypy.quickstart(FlyingFist(), config='config.conf')
     elif operation == 'create_storage':
         logger.info('Creating the RDF storage.')
