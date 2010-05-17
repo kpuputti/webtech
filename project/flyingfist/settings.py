@@ -11,7 +11,7 @@ LOG_LEVEL = logging.DEBUG
 TEMPLATE_FOLDER = os.path.join(PROJECT_ROOT, 'templates')
 
 # Namespace definitions.
-_NS_DOMAIN = 'http://example.org/'
+_NS_DOMAIN = 'http://localhost:8080/'
 NS_FLYINGFIST = _NS_DOMAIN + 'flyingfist/'
 
 # countryInfo.txt column names:
