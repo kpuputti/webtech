@@ -15,6 +15,9 @@ python fist test
 """
 from flyingfist import settings
 from flyingfist import storage
+from mako.lookup import TemplateLookup
+from mako.template import Template
+import cherrypy
 import logging
 import nose
 import rdflib
