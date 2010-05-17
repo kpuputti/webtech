@@ -45,6 +45,13 @@ class StorageCreator(object):
 
     def _add_properties(self):
         logger.info('Adding properties to the graph.')
+
+        self.ontology.add((RDFS.label, RDFS.label, Literal('label')))
+        self.ontology.add((RDF.Property, RDFS.label, Literal('property')))
+        self.ontology.add((RDFS.Class, RDFS.label, Literal('class')))
+        self.ontology.add((RDF.type, RDFS.label, Literal('type')))
+        self.ontology.add((RDFS.subClassOf, RDFS.label, Literal('sub class of')))
+
         for name, desc in settings.PROPERTIES.iteritems():
             prop = self.flyingfist[name]
             self.ontology.add((prop, RDF.type, RDF.Property))
@@ -198,18 +205,23 @@ class StorageCreator(object):
         self.instances.add((instance,
                             self.flyingfist['geonameId'],
                             Literal(geoname_id)))
-        self.instances.add((instance,
-                            self.flyingfist['alternateNames'],
-                            Literal(alternate_names)))
-        self.instances.add((instance,
-                            self.flyingfist['latitude'],
-                            Literal(latitude)))
-        self.instances.add((instance,
-                            self.flyingfist['longitude'],
-                            Literal(longitude)))
-        self.instances.add((instance,
-                            self.flyingfist['countryCode'],
-                            Literal(country_code)))
+
+        if alternate_names:
+            self.instances.add((instance,
+                                self.flyingfist['alternateNames'],
+                                Literal(alternate_names)))
+        if latitude:
+            self.instances.add((instance,
+                                self.flyingfist['latitude'],
+                                Literal(latitude)))
+        if longitude:
+            self.instances.add((instance,
+                                self.flyingfist['longitude'],
+                                Literal(longitude)))
+        if country_code:
+            self.instances.add((instance,
+                                self.flyingfist['countryCode'],
+                                Literal(country_code)))
 
         if admin1_code:
             admin1_class = self._get_admin_class(admin1_code, None, 1)
