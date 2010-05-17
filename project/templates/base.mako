@@ -11,7 +11,7 @@
     ${self.body()}
   </div>
   <script type="text/javascript" src="/static/js/lib/jquery-1.4.2.min.js"></script>
-  <script type="text/javascript" src="/static/js/lib/jquery-ui-1.8.1.custom.min.js"></script>
+  <script type="text/javascript" src="/static/js/lib/jquery-ui/js/jquery-ui-1.8.1.custom.min.js"></script>
   <script type="text/javascript" src="/static/js/scripts.js"></script>
   ${self.footer()}
 </body>
