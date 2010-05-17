@@ -16,3 +16,4 @@ project/log/*
 project/db.sqlite
 project/rdfextras/*
 project/output/*
+project/mako/*
