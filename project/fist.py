@@ -16,7 +16,6 @@ python fist test
 from flyingfist import settings
 from flyingfist import storage
 from mako.lookup import TemplateLookup
-from mako.template import Template
 import cherrypy
 import logging
 import nose
@@ -38,9 +37,21 @@ rdflib.plugin.register('sparql', rdflib.query.Result,
                        'rdfextras.sparql.query', 'SPARQLQueryResult')
 
 
+tmpl_lookup = TemplateLookup(directories=[settings.TEMPLATE_FOLDER])
+
+
+class FlyingFist(object):
+
+    @cherrypy.expose
+    def index(self):
+        tmpl = tmpl_lookup.get_template('index.mako')
+        return tmpl.render()
+
+
 def main(operation=None):
     if operation == 'run':
         logger.info('Running the application.')
+        cherrypy.quickstart(FlyingFist(), config='config.conf')
     elif operation == 'create_storage':
         logger.info('Creating the RDF storage.')
         st = storage.StorageCreator()
