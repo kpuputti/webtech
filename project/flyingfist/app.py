@@ -5,6 +5,7 @@ from rdflib import Namespace
 from rdflib import RDFS
 from rdflib import graph
 import cherrypy
+import itertools
 import logging
 
 
@@ -32,9 +33,45 @@ class FlyingFist(object):
             return str(triples[0][2])
         return uri
 
-    def get_link(self, uri):
-        label = self.get_label(uri)
-        return '<a href="%s">%s</a>' % (uri, label)
+    def get_data(self, uri, label):
+        subject_triples = self.ontology.triples((uri, None, None))
+        object_triples = self.ontology.triples((None, None, uri))
+        subject_data = []
+        object_data = []
+
+        for triple in itertools.chain(subject_triples, object_triples):
+
+            subject = triple[0]
+            predicate = triple[1]
+            tobject = triple[2]
+
+            item = [
+                {
+                    'uri': str(subject),
+                    'label': self.get_label(subject),
+                    'local': subject.startswith(FF),
+                },
+                {
+                    'uri': str(predicate),
+                    'label': self.get_label(predicate),
+                    'local': subject.startswith(FF),
+                },
+                {
+                    'local': tobject.startswith(FF),
+                },
+            ]
+
+            if type(tobject) == Literal:
+                item[2]['text'] = str(tobject)
+            else:
+                item[2]['uri'] = str(tobject)
+                item[2]['label'] = self.get_label(tobject)
+
+            if str(subject) == str(uri):
+                subject_data.append(item)
+            else:
+                object_data.append(item)
+        return subject_data, object_data
 
     @cherrypy.expose
     def flyingfist(self, param=None):
@@ -42,32 +79,14 @@ class FlyingFist(object):
             return tmpl_lookup.get_template('index.mako').render()
 
         uri = FF[param]
-        triples = self.ontology.triples((uri, None, None))
         label = self.get_label(uri) or ''
-        data = []
+        subject_data, object_data = self.get_data(uri, label)
 
-        for triple in triples:
-
-            predicate = triple[1]
-            tobject = triple[2]
-            item = [
-                dict(uri=str(predicate), label=self.get_label(predicate),
-                     local=predicate.startswith(FF)),
-                dict(uri=str(tobject)),
-            ]
-
-            if type(tobject) == Literal:
-                item[1]['text'] = str(tobject)
-            else:
-                item[1]['local'] = tobject.startswith(FF)
-                item[1]['uri'] = str(tobject)
-                item[1]['label'] = self.get_label(tobject)
-
-            data.append(item)
-
-        if not data:
+        if not subject_data and not object_data:
             raise cherrypy.HTTPError(status=404, message='resource not found')
 
-        return tmpl_lookup.get_template('feature.mako').render(label=label,
-                                                               uri=uri,
-                                                               data=data)
+        return tmpl_lookup.get_template('feature.mako').render(
+            label=label,
+            uri=uri,
+            subject_data=subject_data,
+            object_data=object_data)
