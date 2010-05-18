@@ -43,30 +43,31 @@ class FlyingFist(object):
 
         uri = FF[param]
         triples = self.ontology.triples((uri, None, None))
-        info = []
-
         label = self.get_label(uri) or ''
+        data = []
 
         for triple in triples:
+
             predicate = triple[1]
             tobject = triple[2]
-
-            if predicate.startswith(FF):
-                predicate = self.get_link(predicate)
-            else:
-                predicate = self.get_label(predicate)
+            item = [
+                dict(uri=str(predicate), label=self.get_label(predicate),
+                     local=predicate.startswith(FF)),
+                dict(uri=str(tobject)),
+            ]
 
             if type(tobject) == Literal:
-                tobject = str(tobject)
-            elif tobject.startswith(FF):
-                tobject = self.get_link(tobject)
+                item[1]['text'] = str(tobject)
             else:
-                tobject = self.get_label(tobject)
+                item[1]['local'] = tobject.startswith(FF)
+                item[1]['uri'] = str(tobject)
+                item[1]['label'] = self.get_label(tobject)
 
-            info.append(predicate + ' - ' + tobject)
+            data.append(item)
 
-        if not info:
+        if not data:
             raise cherrypy.HTTPError(status=404, message='resource not found')
 
-        return '<b>' + label + ' (' + str(uri) + ')</b><br />' +\
-               '<br />'.join(info)
+        return tmpl_lookup.get_template('feature.mako').render(label=label,
+                                                               uri=uri,
+                                                               data=data)
