@@ -18,7 +18,6 @@ from flyingfist import settings
 from flyingfist import storage
 import cherrypy
 import logging
-import nose
 import rdflib
 import sys
 
@@ -49,6 +48,7 @@ def main(operation=None):
         st.save(settings.ONTOLOGY_FILE, settings.INSTANCES_FILE)
     elif operation == 'test':
         logger.info('Running tests.')
+        import nose
         nose.main(argv=['-w', 'tests'])
     else:
         sys.stderr.write('Unknown argument: %s\r\n' % operation)
