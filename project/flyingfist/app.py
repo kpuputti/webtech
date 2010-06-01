@@ -10,7 +10,8 @@ import logging
 
 
 logger = logging.getLogger('flyingfist.app')
-tmpl_lookup = lookup.TemplateLookup(directories=[settings.TEMPLATE_FOLDER])
+tmpl_lookup = lookup.TemplateLookup(directories=[settings.TEMPLATE_FOLDER],
+                                    input_encoding='utf-8')
 FF = Namespace(settings.NS_FLYINGFIST)
 
 
@@ -30,7 +31,7 @@ class FlyingFist(object):
     def get_label(self, uri):
         triples = list(self.ontology.triples((uri, RDFS.label, None)))
         if triples:
-            return str(triples[0][2])
+            return triples[0][2]
         return uri
 
     def get_data(self, uri, label):
@@ -85,7 +86,7 @@ class FlyingFist(object):
         if not subject_data and not object_data:
             raise cherrypy.HTTPError(status=404, message='resource not found')
 
-        return tmpl_lookup.get_template('feature.mako').render(
+        return tmpl_lookup.get_template('feature.mako').render_unicode(
             label=label,
             uri=uri,
             subject_data=subject_data,
