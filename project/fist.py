@@ -59,7 +59,11 @@ def main(operation=None):
 
 if __name__ == '__main__':
     if len(sys.argv) == 2:
-        sys.exit(main(sys.argv[1]))
+        try:
+            sys.exit(main(sys.argv[1]))
+        except Exception as e:
+            logger.fatal('Uncaught exception: %s' % e)
+            sys.exit(1)
     else:
         sys.stderr.write('Invalid arguments.\r\n')
         print __doc__
