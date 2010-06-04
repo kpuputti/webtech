@@ -17,3 +17,4 @@ project/db.sqlite
 project/rdfextras/*
 project/output/*
 project/mako/*
+project/index/*
