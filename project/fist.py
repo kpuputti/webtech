@@ -10,7 +10,10 @@ python fist.py run
 2. Create the RDF storage (clears the storage first):
 python fist.py create_storage
 
-3. Run the test suite:
+3. Create the Lucene index for place names:
+python fist.py create_index
+
+4. Run the test suite:
 python fist test
 """
 from flyingfist import app
@@ -46,6 +49,10 @@ def main(operation=None):
         st = storage.StorageCreator()
         st.create()
         st.save(settings.ONTOLOGY_FILE, settings.INSTANCES_FILE)
+    elif operation == 'create_index':
+        logger.info('Creating the Lucene index.')
+        ic = storage.IndexCreator()
+        ic.create_index()
     elif operation == 'test':
         logger.info('Running tests.')
         import nose
