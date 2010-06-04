@@ -9,6 +9,7 @@ LOG_FILE = os.path.join(PROJECT_ROOT, 'log', 'flyingfist.log')
 LOG_LEVEL = logging.DEBUG
 
 TEMPLATE_FOLDER = os.path.join(PROJECT_ROOT, 'templates')
+INDEX_FOLDER = os.path.join(PROJECT_ROOT, 'index')
 
 # Namespace definitions.
 _NS_DOMAIN = 'http://localhost:8080/'
