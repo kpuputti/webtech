@@ -7,9 +7,48 @@ from rdflib import RDF
 from rdflib import RDFS
 from rdflib import graph
 import logging
+import lucene
 
 
 logger = logging.getLogger('flyingfist.storage')
+
+
+class IndexCreator(object):
+
+    def __init__(self):
+        logger.info('Initializing Lucene index creation.')
+        lucene.initVM()
+        self.directory = lucene.SimpleFSDirectory(
+            lucene.File(settings.INDEX_FOLDER))
+        self.analyzer = lucene.StandardAnalyzer(lucene.Version.LUCENE_CURRENT)
+
+    def _places(self):
+        with open(settings.FILE_NL_FEATURES) as f:
+            for line in f:
+                line = line.decode('utf-8').strip()
+                columns = line.split('\t')
+                geoname_id = columns[0]
+                label = columns[1]
+                yield (geoname_id, label)
+
+    def create_index(self):
+        logger.info('Writing the Lucene index.')
+        writer = lucene.IndexWriter(self.directory, self.analyzer, True,
+                                    lucene.IndexWriter.MaxFieldLength.UNLIMITED)
+        count = 0
+        for geoname_id, label in self._places():
+            count += 1
+            doc = lucene.Document()
+            doc.add(lucene.Field('geonameid', geoname_id, lucene.Field.Store.YES,
+                                 lucene.Field.Index.NOT_ANALYZED))
+            doc.add(lucene.Field('label', label, lucene.Field.Store.YES,
+                                 lucene.Field.Index.ANALYZED))
+            writer.addDocument(doc)
+
+        logger.info('Added %d places to the index.' % count)
+        writer.optimize()
+        writer.close()
+        logger.info('Lucene index successfully created.')
 
 
 class StorageCreator(object):
