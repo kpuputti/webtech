@@ -24,8 +24,8 @@ class FlyingFist(object):
     def __init__(self):
         logger.info('Reading in the ontology, might take a while...')
         self.ontology = graph.ConjunctiveGraph()
-        #self.ontology.parse(settings.ONTOLOGY_FILE, format='n3')
-        #self.ontology.parse(settings.INSTANCES_FILE, format='n3')
+        self.ontology.parse(settings.ONTOLOGY_FILE, format='n3')
+        self.ontology.parse(settings.INSTANCES_FILE, format='n3')
         logger.info('Finished reading the ontology.')
         self.storage = storage.Storage()
 
@@ -89,7 +89,7 @@ class FlyingFist(object):
             ]
 
             if type(tobject) == Literal:
-                item[2]['text'] = str(tobject)
+                item[2]['text'] = tobject
             else:
                 item[2]['uri'] = str(tobject)
                 item[2]['label'] = self.get_label(tobject)
@@ -126,7 +126,6 @@ class FlyingFist(object):
             raise cherrypy.HTTPError(status=404, message='Api method empty.')
 
         if method == 'autocomplete' and term:
-            logger.debug('Autocomplete searching for: %s' % term)
             hits, places = self.storage.search(term, partial=True, max_results=10)
         else:
             return ''
