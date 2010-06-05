@@ -30,7 +30,7 @@ class FlyingFist(object):
 
     @cherrypy.expose
     def index(self):
-        return 'index'
+        return tmpl_lookup.get_template('index.mako').render_unicode()
 
     @cherrypy.expose
     def search(self, q=None):
