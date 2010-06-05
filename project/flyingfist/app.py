@@ -36,12 +36,18 @@ class FlyingFist(object):
     def search(self, q=None):
         lucene.getVMEnv().attachCurrentThread()
         if q is None:
-            query = ''
+            query = query_attr = ''
             hits = 0
+            places = []
         else:
+            q = q.replace('"', '')
             query = utils.escape_html(q)
+            query_attr = utils.escape_attr(q)
             hits, places = self.storage.search(q)
+        search = q is not None
         return tmpl_lookup.get_template('search.mako').render_unicode(
+            search=search,
+            query_attr=query_attr,
             query=query,
             hits=hits,
             places=places)
