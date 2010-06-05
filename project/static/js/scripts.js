@@ -12,4 +12,5 @@ var FF = {};
 
 $(document).ready(function () {
     LOG('init page');
+    $('#q').focus();
 });
