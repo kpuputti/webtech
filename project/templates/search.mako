@@ -4,7 +4,7 @@
 
 <p>
   Search for places:
-  <form action="/search" method="get" autocomplete="off">
+  <form id="search" action="/search" method="get" autocomplete="off">
     <input type="text" id="q" name="q" value="${query_raw}" />
     <input type="submit" value="Search" />
   </form>
@@ -12,13 +12,13 @@
 
 % if search:
 
-<h2>Search results for "${query}" (${hits}):</h2>
+<h2>Found ${hits} results for "${query}":</h2>
 
 <ul>
 
-  % for geoname_id, label, score in places:
+  % for geoname_id, label, label_highlighted, score in places:
   <li>
-    [${geoname_id}]: ${label}
+    <a href="/flyingfist/${geoname_id}">${label_highlighted}</a>
   </li>
   % endfor
 
