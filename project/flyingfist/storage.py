@@ -319,7 +319,37 @@ class StorageCreator(object):
 class Storage(object):
 
     def __init__(self):
-        pass
+        logger.info('Initializing Lucene storage.')
+
+        self.directory = lucene.SimpleFSDirectory(
+            lucene.File(settings.INDEX_FOLDER))
+        self.analyzer = lucene.StandardAnalyzer(lucene.Version.LUCENE_CURRENT)
+        self.formatter = lucene.SimpleHTMLFormatter('<b>', '</b>')
+        self.searcher = lucene.IndexSearcher(self.directory, True)
+
+    def search(self, query, partial=False, max_results=200):
+        words = query.strip().split()
+        if partial:
+            # Add wildcard to each search word.
+            words = [word + '*' for word in words if not word.endswith('*')]
+        query_str = ' '.join(words)
+        lquery = lucene.QueryParser(lucene.Version.LUCENE_CURRENT,
+                                    'label', self.analyzer).parse(query_str)
+        scorer = lucene.QueryScorer(lquery)
+        highlighter = lucene.Highlighter(self.formatter, scorer)
+
+        results = self.searcher.search(lquery, None, max_results)
+        hits = results.totalHits
+
+        places = []
+        for score_doc in results.scoreDocs:
+            doc = self.searcher.doc(score_doc.doc)
+            geoname_id = doc['geonameid']
+            label = highlighter.getBestFragment(self.analyzer,
+                                                'label', doc['label'])
+            score = score_doc.score
+            places.append((geoname_id, label, score))
+        return hits, places
 
     def query(self, query):
         # TODO: execute the SPARQL query
