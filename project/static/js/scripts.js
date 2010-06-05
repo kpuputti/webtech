@@ -12,5 +12,7 @@ var FF = {};
 
 $(document).ready(function () {
     LOG('init page');
-    $('#q').focus();
+    $('#q').focus().autocomplete({
+        source: '/api?method=autocomplete'
+    });
 });

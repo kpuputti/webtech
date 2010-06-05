@@ -8,6 +8,7 @@ from rdflib import RDFS
 from rdflib import graph
 import cherrypy
 import itertools
+import json
 import logging
 import lucene
 
@@ -35,19 +36,21 @@ class FlyingFist(object):
     @cherrypy.expose
     def search(self, q=None):
         lucene.getVMEnv().attachCurrentThread()
-        if q is None:
-            query = query_attr = ''
+        if q is None or not q.strip():
+            search = False
+            query = ''
+            query_raw = ''
             hits = 0
             places = []
         else:
-            q = q.replace('"', '')
+            search = True
+            query_raw = q.replace('"', '')
             query = utils.escape_html(q)
             hits, places = self.storage.search(q)
-        search = q is not None
         return tmpl_lookup.get_template('search.mako').render_unicode(
             search=search,
             query=query,
-            query_raw=q,
+            query_raw=query_raw,
             hits=hits,
             places=places)
 
@@ -114,3 +117,22 @@ class FlyingFist(object):
             uri=uri,
             subject_data=subject_data,
             object_data=object_data)
+
+    @cherrypy.expose
+    def api(self, method=None, term=None):
+        lucene.getVMEnv().attachCurrentThread()
+        if method is None:
+            logger.debug('Api method empty.')
+            raise cherrypy.HTTPError(status=404, message='Api method empty.')
+
+        if method == 'autocomplete' and term:
+            logger.debug('Autocomplete searching for: %s' % term)
+            hits, places = self.storage.search(term, partial=True, max_results=10)
+        else:
+            return ''
+
+        cherrypy.response.headers['Content-Type'] = 'application/json'
+
+        results = [dict(label=label_hi, value=label)
+                   for id, label, label_hi, score in places]
+        return json.dumps(results)
