@@ -345,10 +345,11 @@ class Storage(object):
         for score_doc in results.scoreDocs:
             doc = self.searcher.doc(score_doc.doc)
             geoname_id = doc['geonameid']
-            label = highlighter.getBestFragment(self.analyzer,
-                                                'label', doc['label'])
+            label = doc['label']
+            label_highlighted = highlighter.getBestFragment(self.analyzer,
+                                                            'label', label)
             score = score_doc.score
-            places.append((geoname_id, label, score))
+            places.append((geoname_id, label, label_highlighted, score))
         return hits, places
 
     def query(self, query):
