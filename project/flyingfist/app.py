@@ -42,13 +42,12 @@ class FlyingFist(object):
         else:
             q = q.replace('"', '')
             query = utils.escape_html(q)
-            query_attr = utils.escape_attr(q)
             hits, places = self.storage.search(q)
         search = q is not None
         return tmpl_lookup.get_template('search.mako').render_unicode(
             search=search,
-            query_attr=query_attr,
             query=query,
+            query_raw=q,
             hits=hits,
             places=places)
 
