@@ -12,7 +12,9 @@
 
 % if search:
 
-<h2>Found ${hits} results for "${query}":</h2>
+<% results = 'result' if hits == 1 else 'results' %>
+
+<h2>Found ${hits} ${results} for "${query}":</h2>
 
 <ul id="search-results">
 
