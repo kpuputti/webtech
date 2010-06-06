@@ -31,7 +31,7 @@ class FlyingFist(object):
 
     @cherrypy.expose
     def index(self):
-        return tmpl_lookup.get_template('index.mako').render_unicode()
+        raise cherrypy.HTTPRedirect('/search', 302)
 
     @cherrypy.expose
     def search(self, q=None):
@@ -46,7 +46,7 @@ class FlyingFist(object):
             search = True
             query_raw = q.replace('"', '')
             query = utils.escape_html(q)
-            hits, places = self.storage.search(q)
+            hits, places = self.storage.search(q, ontology=self.ontology)
         return tmpl_lookup.get_template('search.mako').render_unicode(
             search=search,
             query=query,
@@ -132,6 +132,6 @@ class FlyingFist(object):
 
         cherrypy.response.headers['Content-Type'] = 'application/json'
 
-        results = [dict(label=label_hi, value=label)
-                   for id, label, label_hi, score in places]
+        results = [dict(label=place['label_hi'], value=place['label'])
+                   for place in places]
         return json.dumps(results)

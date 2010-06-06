@@ -11,6 +11,7 @@ import lucene
 
 
 logger = logging.getLogger('flyingfist.storage')
+FF = Namespace(settings.NS_FLYINGFIST)
 
 
 class IndexCreator(object):
@@ -327,7 +328,45 @@ class Storage(object):
         self.formatter = lucene.SimpleHTMLFormatter('<b>', '</b>')
         self.searcher = lucene.IndexSearcher(self.directory, True)
 
-    def search(self, query, partial=False, max_results=200):
+    def get_label(self, ontology, uri):
+        triples = list(ontology.triples((uri, RDFS.label, None)))
+        if triples:
+            return triples[0][2]
+        return uri
+
+    def place_info(self, ontology, geoname_id):
+        if ontology is None:
+            return {}
+        info = {}
+        place = FF[str(geoname_id)]
+        ftype = list(ontology.triples((place, RDF.type, None)))
+        if ftype:
+            info['type'] = self.get_label(ontology, ftype[0][2])
+        admin1 = list(ontology.triples((place, FF['admin1Code'], None)))
+        if admin1:
+            code = admin1[0][2]
+            info['admin1Code'] = code
+            info['admin1CodeLabel'] = self.get_label(ontology, code)
+        admin2 = list(ontology.triples((place, FF['admin2Code'], None)))
+        if admin2:
+            code = admin2[0][2]
+            info['admin2Code'] = code
+            info['admin2CodeLabel'] = self.get_label(ontology, code)
+        country = list(ontology.triples((place, FF['countryCode'], None)))
+        if country:
+            info['countryCode'] = country[0][2]
+        population = list(ontology.triples((place, FF['population'], None)))
+        if population:
+            info['population'] = population[0][2]
+        latitude = list(ontology.triples((place, FF['latitude'], None)))
+        if latitude:
+            info['latitude'] = latitude[0][2]
+        longitude = list(ontology.triples((place, FF['longitude'], None)))
+        if longitude:
+            info['longitude'] = longitude[0][2]
+        return info
+
+    def search(self, query, ontology=None, partial=False, max_results=200):
         words = query.strip().split()
         if partial:
             # Add wildcard to each search word.
@@ -344,14 +383,16 @@ class Storage(object):
         places = []
         for score_doc in results.scoreDocs:
             doc = self.searcher.doc(score_doc.doc)
-            geoname_id = doc['geonameid']
+            geoname_id = int(doc['geonameid'])
             label = doc['label']
-            label_highlighted = highlighter.getBestFragment(self.analyzer,
-                                                            'label', label)
+            label_hi = highlighter.getBestFragment(self.analyzer,
+                                                   'label', label)
             score = score_doc.score
-            places.append((geoname_id, label, label_highlighted, score))
+            places.append({
+                'geoname_id': geoname_id,
+                'label': label,
+                'label_hi': label_hi,
+                'score': score,
+                'info': self.place_info(ontology, geoname_id),
+                })
         return hits, places
-
-    def query(self, query):
-        # TODO: execute the SPARQL query
-        pass
