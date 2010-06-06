@@ -14,11 +14,49 @@
 
 <h2>Found ${hits} results for "${query}":</h2>
 
-<ul>
+<ul id="search-results">
 
-  % for geoname_id, label, label_highlighted, score in places:
+  % for i, place in enumerate(places):
+
+  % if i == 0:
+  <li class="highlight">
+  % else:
   <li>
-    <a href="/flyingfist/${geoname_id}">${label_highlighted}</a>
+  % endif
+
+    <% info = place['info'] %>
+
+    <a href="/flyingfist/${place['geoname_id']}">${place['label_hi']}</a>
+
+    <span class="place-info">
+
+    % if info.get('admin2Code', None) and info.get('admin1Code', None):
+
+    in <a href="${info['admin2Code']}">${info['admin2CodeLabel']}</a>,
+    <a href="${info['admin1Code']}">${info['admin1CodeLabel']}</a>
+
+    % elif info.get('admin1Code', None):
+    in <a href="${info['admin1Code']}">${info['admin1CodeLabel']}</a>
+
+    % elif info.get('admin2Code', None):
+    in <a href="${info['admin2Code']}">${info['admin2CodeLabel']}</a>
+
+    % endif
+
+    % if info.get('population', None):
+    <br />population: ${info['population']}
+    % endif
+
+    </span>
+
+    % if i == 0 and info.get('latitude', None) and info.get('longitude', None):
+
+    <span class="place-info-map">
+      <img src="http://maps.google.com/maps/api/staticmap?sensor=false&zoom=10&size=300x200&center=${info['latitude']},${info['longitude']}" />
+    </span>
+
+    % endif
+
   </li>
   % endfor
 

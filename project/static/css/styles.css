@@ -61,3 +61,28 @@ margin: 10px auto;
 #q {
 width: 500px;
 }
+
+#search-results li {
+margin-left: 0;
+}
+
+li.highlight {
+padding: 0.5em;
+background-color: #ffffcc;
+}
+
+span.place-info {
+display: block;
+font-size: 0.8em;
+color: #999;
+}
+
+span.place-info a {
+color: #666;
+}
+
+span.place-info-map img {
+margin-top: 1em;
+width: 300px;
+height: 200px;
+}
