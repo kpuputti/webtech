@@ -125,7 +125,7 @@ PROPERTIES = {
     'longitude': 'longitude',
     'countryCode': 'country code',
     'cc2': 'cc2',
-    'admin1Code': 'admin1 code',
+    'admin1Code': 'admin 1 code',
     'admin2Code': 'admin 2 code',
     'admin3Code': 'admin 3 code',
     'admin4Code': 'admin 4 code',
