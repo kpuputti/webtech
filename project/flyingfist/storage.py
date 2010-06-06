@@ -365,6 +365,9 @@ class Storage(object):
         if 'type' in info:
             simple_info['type'] = info['type']['objectLabel']
 
+        if 'label' in info:
+            simple_info['label'] = info['label']['objectLabel']
+
         for acode in ('admin1Code', 'admin2Code'):
             if acode in info:
                 simple_info[acode] = info[acode]['object']
