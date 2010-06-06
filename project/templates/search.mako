@@ -28,6 +28,8 @@
 
     <a href="/flyingfist/${place['geoname_id']}">${place['label_hi']}</a>
 
+    <span class="place-type">(${info['type']})</span>
+
     <span class="place-info">
 
     % if info.get('admin2Code', None) and info.get('admin1Code', None):
@@ -52,7 +54,9 @@
     % if i == 0 and info.get('latitude', None) and info.get('longitude', None):
 
     <span class="place-info-map">
-      <img src="http://maps.google.com/maps/api/staticmap?sensor=false&zoom=10&size=300x200&center=${info['latitude']},${info['longitude']}" />
+      <a href="/flyingfist/${place['geoname_id']}">
+        <img src="http://maps.google.com/maps/api/staticmap?sensor=false&zoom=10&size=300x200&center=${info['latitude']},${info['longitude']}" />
+      </a>
     </span>
 
     % endif
