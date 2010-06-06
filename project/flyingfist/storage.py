@@ -345,14 +345,18 @@ class Storage(object):
                 key = predicate[predicate.rindex('#') + 1:]
             else:
                 key = predicate[predicate.rindex('/') + 1:]
-            is_literal = type(object) == Literal
+            is_literal = type(tobject) == Literal
             if is_literal:
                 object_label = None
             else:
                 object_label = self.get_label(ontology, tobject)
+            is_local = False
+            if not is_literal and tobject.startswith(FF):
+                is_local = True
             info[key] = {
                 'isLiteral': is_literal,
-                'propertyLabel': self.get_label(ontology, property),
+                'isLocal': is_local,
+                'predicateLabel': self.get_label(ontology, predicate),
                 'object': tobject,
                 'objectLabel': object_label,
             }
