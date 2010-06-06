@@ -54,6 +54,17 @@ class FlyingFist(object):
             hits=hits,
             places=places)
 
+    def _sort_key(self, key):
+        values = {
+            'label': '00',
+            'type': '01',
+            'admin1Code': '02',
+            'admin2Code': '03',
+            'latitude': '04',
+            'longitude': '05',
+        }
+        return values.get(key, key)
+
     @cherrypy.expose
     def flyingfist(self, param=None):
         if param is None:
@@ -62,12 +73,15 @@ class FlyingFist(object):
         uri = FF[param]
         label = self.storage.get_label(self.ontology, uri) or ''
 
+        info = self.storage.place_info(self.ontology, param)
         info_str = json.dumps(self.storage.place_info_simple(self.ontology, param))
 
         return tmpl_lookup.get_template('feature.mako').render_unicode(
             label=label,
             uri=uri,
-            info=info_str)
+            info=info,
+            sorted_keys=sorted(info, key=self._sort_key),
+            info_str=info_str)
 
 
     @cherrypy.expose
