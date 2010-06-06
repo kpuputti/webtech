@@ -339,32 +339,42 @@ class Storage(object):
             return {}
         info = {}
         place = FF[str(geoname_id)]
-        ftype = list(ontology.triples((place, RDF.type, None)))
-        if ftype:
-            info['type'] = self.get_label(ontology, ftype[0][2])
-        admin1 = list(ontology.triples((place, FF['admin1Code'], None)))
-        if admin1:
-            code = admin1[0][2]
-            info['admin1Code'] = code
-            info['admin1CodeLabel'] = self.get_label(ontology, code)
-        admin2 = list(ontology.triples((place, FF['admin2Code'], None)))
-        if admin2:
-            code = admin2[0][2]
-            info['admin2Code'] = code
-            info['admin2CodeLabel'] = self.get_label(ontology, code)
-        country = list(ontology.triples((place, FF['countryCode'], None)))
-        if country:
-            info['countryCode'] = country[0][2]
-        population = list(ontology.triples((place, FF['population'], None)))
-        if population:
-            info['population'] = population[0][2]
-        latitude = list(ontology.triples((place, FF['latitude'], None)))
-        if latitude:
-            info['latitude'] = latitude[0][2]
-        longitude = list(ontology.triples((place, FF['longitude'], None)))
-        if longitude:
-            info['longitude'] = longitude[0][2]
+
+        for subject, predicate, tobject in ontology.triples((place, None, None)):
+            if '#' in predicate:
+                key = predicate[predicate.rindex('#') + 1:]
+            else:
+                key = predicate[predicate.rindex('/') + 1:]
+            is_literal = type(object) == Literal
+            if is_literal:
+                object_label = None
+            else:
+                object_label = self.get_label(ontology, tobject)
+            info[key] = {
+                'isLiteral': is_literal,
+                'propertyLabel': self.get_label(ontology, property),
+                'object': tobject,
+                'objectLabel': object_label,
+            }
         return info
+
+    def place_info_simple(self, ontology, geoname_id):
+        info = self.place_info(ontology, geoname_id)
+        simple_info = {}
+
+        if 'type' in info:
+            simple_info['type'] = info['type']['objectLabel']
+
+        for acode in ('admin1Code', 'admin2Code'):
+            if acode in info:
+                simple_info[acode] = info[acode]['object']
+                simple_info[acode + 'Label'] = info[acode]['objectLabel']
+
+        for prop in ('countryCode', 'population', 'latitude', 'longitude'):
+            if prop in info:
+                simple_info[prop] = info[prop]['object']
+
+        return simple_info
 
     def search(self, query, ontology=None, partial=False, max_results=200):
         words = query.strip().split()
@@ -393,6 +403,6 @@ class Storage(object):
                 'label': label,
                 'label_hi': label_hi,
                 'score': score,
-                'info': self.place_info(ontology, geoname_id),
+                'info': self.place_info_simple(ontology, geoname_id),
                 })
         return hits, places
