@@ -94,6 +94,25 @@ width: 300px;
 height: 200px;
 }
 
+#header {
+height: 100px;
+}
+
+#header h1 {
+line-height: 100px;
+margin: 0;
+}
+
+#header form {
+position: absolute;
+top: 35px;;
+right: 0;
+}
+
+#header #q {
+width: 300px;
+}
+
 #map {
 height: 400px;
 border: 1px solid black;
