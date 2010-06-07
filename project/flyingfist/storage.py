@@ -384,6 +384,8 @@ class Storage(object):
         return simple_info
 
     def search(self, query, ontology=None, partial=False, max_results=200):
+        if not query or len(query.strip().replace('*', '')) < 1:
+            return 0, []
         words = query.strip().split()
         if partial:
             # Add wildcard to each search word.
