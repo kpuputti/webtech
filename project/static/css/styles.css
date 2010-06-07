@@ -74,9 +74,11 @@ text-decoration: underline;
 
 #container {
 position: relative;
-width: 960px;
-margin: 0 auto;
+width: 950px;
+margin: 0 auto 5px auto;
 padding: 10px 10px 0 10px;
+border: 5px solid #86b21f;
+border-top: none;
 background-color: #fff;
 }
 
