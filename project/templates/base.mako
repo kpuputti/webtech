@@ -30,6 +30,6 @@
 <%def name="title()">Main</%def>
 <%def name="footer()">
 <p>
-  Web technology 2010: Kimmo Puputti and Adam Morocz
+  Web technology 2010: Kimmo Puputti and Adam Morocz. Feature data from <a href="http://www.geonames.org/">Geonames</a>.
 </p>
 </%def>
