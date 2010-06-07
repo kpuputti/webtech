@@ -2,12 +2,9 @@ from flyingfist import settings
 from flyingfist import storage
 from flyingfist import utils
 from mako import lookup
-from rdflib import Literal
 from rdflib import Namespace
-from rdflib import RDFS
 from rdflib import graph
 import cherrypy
-import itertools
 import json
 import logging
 import lucene
