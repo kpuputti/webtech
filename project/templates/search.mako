@@ -1,9 +1,8 @@
 <%inherit file="base.mako"/>
 
-<h1>Flying Fist</h1>
+<h1>Flying Fist place search:</h1>
 
 <p>
-  Search for places:
   <form id="search" action="/search" method="get" autocomplete="off">
     <input type="text" id="q" name="q" value="${query_raw}" />
     <input type="submit" value="Search" />
@@ -11,6 +10,8 @@
 </p>
 
 % if search:
+
+<hr />
 
 <% results = 'result' if hits == 1 else 'results' %>
 

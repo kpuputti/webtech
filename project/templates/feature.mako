@@ -2,18 +2,16 @@
 
 <%def name="title()">${label}</%def>
 
-<div id="header">
+<%def name="header()">
+<form id="search" action="/search" method="get" autocomplete="off">
+  <input type="text" id="q" name="q" />
+  <input type="submit" value="Search" />
+</form>
+</%def>
 
-  <h1>${label}<br />
-    <span class="place-type">(${info['type']['objectLabel']})</span>
-  </h1>
-
-  <form id="search" action="/search" method="get" autocomplete="off">
-    <input type="text" id="q" name="q" />
-    <input type="submit" value="Search" />
-  </form>
-
-</div>
+<h1 class="place-header">${label}<br />
+  <span class="place-type">(${info['type']['objectLabel']})</span>
+</h1>
 
 % if 'latitude' in info and 'longitude' in info:
 <div id="map"></div>
