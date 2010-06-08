@@ -9,7 +9,24 @@
   </form>
 </p>
 
-% if search:
+% if not search:
+<div id="description">
+  <p>
+    Flying Fist has over 21 000 places within the
+    <a href="/flyingfist/2750405">the Kingdom of the
+    Netherlands</a>. Just try typing in a place name and the
+    autocompletion suggests words that are within the data store.
+  </p>
+  <p>Some example places to get you started:</p>
+  <ul>
+    <li><a href="/flyingfist/2750405">the Kingdom of the Netherlands</a></li>
+    <li><a href="/flyingfist/2753919">Holland</a></li>
+    <li><a href="/flyingfist/2756253">Eindhoven</a></li>
+    <li><a href="/flyingfist/2759794">Amsterdam</a></li>
+    <li><a href="/flyingfist/7113992">Rioolwaterzuiveringsinstallatie Apeldoorn</a></li>
+  </ul>
+</div>
+% else:
 
 <hr />
 

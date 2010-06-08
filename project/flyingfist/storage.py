@@ -1,6 +1,5 @@
-"""Helper functions to create the RDF storage.
-"""
 from flyingfist import settings
+from flyingfist import utils
 from rdflib import Literal
 from rdflib import Namespace
 from rdflib import RDF
@@ -8,6 +7,7 @@ from rdflib import RDFS
 from rdflib import graph
 import logging
 import lucene
+import operator
 
 
 logger = logging.getLogger('flyingfist.storage')
@@ -415,3 +415,11 @@ class Storage(object):
                 'info': self.place_info_simple(ontology, geoname_id),
                 })
         return hits, places
+
+    def get_related(self, ontology, uri):
+        related = set()
+        results = ontology.triples((None, None, uri))
+        for s, p, o in results:
+            related.add((s, self.get_label(ontology, s),
+                         self.get_label(ontology, p)))
+        return sorted(list(related), key=operator.itemgetter(1))

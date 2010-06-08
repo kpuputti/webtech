@@ -27,12 +27,13 @@ font-size: 1.3em;
 }
 
 h3, h4, h5 {
-font-size: 1.1em;
+font-size: 1.2em;
 }
 
 p, li {
 font-size: 1em;
 margin: 1em 0;
+color: #555;
 }
 
 strong {
@@ -80,6 +81,10 @@ padding: 10px 10px 0 10px;
 border: 5px solid #86b21f;
 border-top: none;
 background-color: #fff;
+}
+
+#description p {
+width: 700px;
 }
 
 #footer {
@@ -164,7 +169,30 @@ height: 72px;
 margin: 10px 0 0 50px;
 }
 
+#toggle-wikipedia {
+position: absolute;
+top: 80px;
+right: 10px;
+}
+
+#toggle-wikipedia input {
+margin-right: 5px;
+}
+
 #map {
 height: 400px;
 border: 1px solid black;
+}
+
+div.wikipedia-popup {
+width: 300px;
+height: 200px;
+overflow: auto;
+font-size: 0.8em;
+}
+
+div.wikipedia-popup img {
+width: 100px;
+float: left;
+margin: 0 10px 5px 0;
 }
