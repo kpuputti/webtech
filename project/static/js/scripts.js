@@ -125,7 +125,8 @@ FF.feature = (function () {
             map = new google.maps.Map(mapContainer, {
                 center: point,
                 zoom: 13,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                scrollwheel: false
             });
             marker = new google.maps.Marker({
                 position: point,
