@@ -83,7 +83,7 @@ else:
 
 % if related:
 
-<h3>Related places:</h3>
+<h3>Related places (${len(related)}):</h3>
 
 <ul>
 
