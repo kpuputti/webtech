@@ -21,6 +21,7 @@ from flyingfist import settings
 from flyingfist import storage
 import cherrypy
 import logging
+import os.path
 import rdflib
 import sys
 
@@ -42,7 +43,10 @@ rdflib.plugin.register('sparql', rdflib.query.Result,
 def main(operation=None):
     if operation == 'run':
         logger.info('Running the application.')
-        cherrypy.config.update({'tools.staticdir.root': settings.PROJECT_ROOT})
+        cherrypy.config.update({
+            'tools.staticdir.root': settings.PROJECT_ROOT,
+            'error_page.404': app.error_404
+        })
         cherrypy.quickstart(app.FlyingFist(), config='config.conf')
     elif operation == 'create_storage':
         logger.info('Creating the RDF storage.')
