@@ -1,6 +1,7 @@
 \documentclass[a4paper,12pt]{article}
 
 \usepackage{hyperref}
+\usepackage{graphicx}
 
 \hypersetup{
   pdftitle={Flying Fist},
@@ -128,6 +129,57 @@ python fist.py run
 
 \subsection{User Interface}
 
+All the features in the triple store have their own page. A map is
+showing where the feature is and the features properties are listed
+under the map. Also the current weather conditions are fetches
+dynamically from the Geonames API.
 
+As seen in Figure \ref{feature}, Wikipedia pages are also shown on the
+map nearby the current place if the checkbox is checked. The data is
+fetched dynamically as an AJAX call to the internal REST-style JSON
+API that fetches the information from the Geonames API.
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth]{img/feature.png}
+  \caption{Wikipedia pages and weather conditions near the place.}
+  \label{feature}
+\end{figure}
+
+\noindent The same feature page is used for all browsable RDF
+resources. The data is highly linked and can therefore be easily
+browsed following the internal or external links. On the bottom of
+each resource's page, a list of recommended places is shown. Also the
+property name that links these two resources is shown in the
+recommendations (Figure \ref{recommendations}).
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth]{img/recommendations.png}
+  \caption{Properties and a list of related resources are shown.}
+  \label{recommendations}
+\end{figure}
+
+\noindent The search has an autocomplete feature that suggests place
+names based on what the user is writing into the search box (Figure
+\ref{autocomplete}). Matched tokens are highlighted. The autocomplete
+feature is especially useful for slow typists or when searching long
+place names.
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth]{img/autocomplete.png}
+  \caption{Autocomplete search suggests place names.}
+  \label{autocomplete}
+\end{figure}
+
+The search results page (Figure \ref{search}) lists places whose name
+matches the search query. The results are listed in an order where the
+best match is first. Place type, its admin codes (area where the place
+is), and population is shown for each result (if found). Also, a small
+map image is shown for the best result.
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth]{img/search.png}
+  \caption{Results for the query `amstel'.}
+  \label{search}
+\end{figure}
 
 \end{document}
