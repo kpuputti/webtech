@@ -44,7 +44,22 @@ also see the places on a interactive map.
 
 \section{Data and the ontology}
 
+The feature data downloaded from the Geonames site was converted into
+an RDF graph and serialized into the N3 format. The ontology has 675
+classes, 15 properties, and 21 372 feature instances, totaling in over
+300 000 RDF triples.
 
+Creating the ontology was straight-forward. All the feature type
+classes formed a clear hierarchy and the properties were constructed
+from the data schema. The flexibility of the RDF format really helped
+in that we didn't have to fix the schema and it was trivial to add new
+properties and to list all properties in the resource's page.
+
+The data was very linked within itself, but also to other resources on
+the web. We combined it with weather information and Wikipedia pages
+using the Geonames API, but there is no limits in what could be added
+to enrich the application. For example, images and news could be shown
+for each place.
 
 \section{Tool and Technologies}
 
