@@ -35,8 +35,9 @@ geographically annotated data can be easily linked together.
 
 Our application lets you browse geographical data that is linked
 within itself and also to other third party sites like Wikipedia
-etc. We use the data from Geonames (\url{http://www.geonames.org/})
-for places inside The Netherlands in the backend of our application.
+etc. We use the data from
+Geonames\footnote{\url{http://www.geonames.org/}} for places inside
+The Netherlands in the backend of our application.
 
 You can search for places by their name and browse through the pages
 of each place. Every place is linked to several other places. You can
@@ -68,17 +69,17 @@ for each place.
 The web application is built in Python using CherryPy HTTP framework
 and Mako templates. The data is converted into RDF and queried using
 RDFLib. The triple store is read into memory from the converted N3
-files every time the application is started. We also use PyLucene
-(\url{http://lucene.apache.org/pylucene/}) to index and search the
-place names.
+files every time the application is started. We also use
+PyLucene\footnote{\url{http://lucene.apache.org/pylucene/}} to index
+and search the place names.
 
 \subsection{Frontend}
 
 The HTML is built using Mako templates. We use jQuery JavaScript
-library (\url{http://jquery.com/}) for the dynamic frontend
-functionality and AJAX calls and Google Maps JavaScript API V3
-(\url{http://code.google.com/apis/maps/documentation/javascript/}) for
-the interactive map.
+library\footnote{\url{http://jquery.com/}} for the dynamic frontend
+functionality and AJAX calls and Google Maps JavaScript API
+V3\footnote{\url{http://code.google.com/apis/maps/documentation/javascript/}}
+for the interactive map.
 
 The layout of the application is done using CSS.
 
@@ -90,8 +91,8 @@ The layout of the application is done using CSS.
 and RDF Extras (from RDFLib) have to be installed and found on the
 Python search path.\\
 
-\noindent To run the application, you first have to clone the Git
-repository with the following command:
+\noindent To run the application, the Git repository has to be cloned
+first with the following command:
 
 \begin{verbatim}
 git clone git://github.com/kpuputti/webtech.git
@@ -108,9 +109,9 @@ mkdir data index log output
 \end{verbatim}
 
 \noindent Third, the following files must be downloaded from the
-Geonames download server
-(\url{http://download.geonames.org/export/dump/}) and extracted into
-the `data' directory:
+Geonames download
+server\footnote{\url{http://download.geonames.org/export/dump/}} and
+extracted into the `data' directory:
 
 \begin{verbatim}
 NL.zip
