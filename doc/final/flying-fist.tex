@@ -66,4 +66,68 @@ the interactive map.
 
 The layout of the application is done using CSS.
 
+\section{Using the application}
+
+\subsection{Setup}
+
+\noindent \textit{Prerequisites}: CherryPy, Mako, PyLucene, RDFLib,
+and RDF Extras (from RDFLib) have to be installed and found on the
+Python search path.\\
+
+\noindent To run the application, you first have to clone the Git
+repository with the following command:
+
+\begin{verbatim}
+git clone git://github.com/kpuputti/webtech.git
+\end{verbatim}
+
+\noindent which creates a directory `webtech' that has the `project'
+subdirectory with all the source code.
+
+Second, some directories have to be made into the project directory
+using the command:
+
+\begin{verbatim}
+mkdir data index log output
+\end{verbatim}
+
+\noindent Third, the following files must be downloaded from the
+Geonames download server
+(\url{http://download.geonames.org/export/dump/}) and extracted into
+the `data' directory:
+
+\begin{verbatim}
+NL.zip
+admin1Codes.txt
+admin2Codes.txt
+countryInfo.txt
+featureCodes_en.txt
+\end{verbatim}
+
+\noindent Then using the control script \texttt{fist.py} in the
+project root folder, the RDF triple store and the Lucene index are
+created with the commands:
+
+\begin{verbatim}
+python fist.py create_storage
+python fist.py create_index
+\end{verbatim}
+
+\noindent The RDF graphs are stored in the `output' directory and the
+Lucene index in the `index' directory. The log file for the
+application is created in the `log' directory and can be followed to
+get information of the progress or about errors that might have
+happened.
+
+If the backend storages are created successfully, the application can
+be started with the command:
+
+\begin{verbatim}
+python fist.py run
+\end{verbatim}
+
+\subsection{User Interface}
+
+
+
 \end{document}
