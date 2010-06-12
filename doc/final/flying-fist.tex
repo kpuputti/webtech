@@ -41,14 +41,29 @@ You can search for places by their name and browse through the pages
 of each place. Every place is linked to several other places. You can
 also see the places on a interactive map.
 
+\section{Data and the ontology}
+
+
+
 \section{Tool and Technologies}
 
 \subsection{Backend}
 
-
+The web application is built in Python using CherryPy HTTP framework
+and Mako templates. The data is converted into RDF and queried using
+RDFLib. The triple store is read into memory from the converted N3
+files every time the application is started. We also use PyLucene
+(\url{http://lucene.apache.org/pylucene/}) to index and search the
+place names.
 
 \subsection{Frontend}
 
+The HTML is built using Mako templates. We use jQuery JavaScript
+library (\url{http://jquery.com/}) for the dynamic frontend
+functionality and AJAX calls and Google Maps JavaScript API V3
+(\url{http://code.google.com/apis/maps/documentation/javascript/}) for
+the interactive map.
 
+The layout of the application is done using CSS.
 
 \end{document}
